@@ -16,7 +16,7 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true } , (error, client) =
     //console.log("connected!");
     //https://docs.mongodb.com/manual/reference/operator/update/
     const db = client.db(databaseName);
-      db.collection('users').updateMany({name: 'rrr'},{$inc :{age: -10}} ).then((result) =>{
+      db.collection('users').deleteMany({name: 'rrr'} ).then((result) =>{
         console.log(result);
     }).catch((error) => {
         console.log(error);
