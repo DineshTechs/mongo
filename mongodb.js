@@ -14,30 +14,22 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true } , (error, client) =
         return console.log("Error in Connection");
     }
     //console.log("connected!");
+    //https://docs.mongodb.com/manual/reference/operator/update/
     const db = client.db(databaseName);
-    // db.collection('users').findOne({name : 'rrr'} , (error, user) => {
-    //     if(error){
-    //         return console.log("error")
-    //     }
-    //     console.log(user);
-    // })
-    db.collection('users').find({name : 'rrr'}).toArray((error, user) => {
-        if(error){
-            return console.log("error")
-        }
-        console.log(user);
-    })
-
-    db.collection('users').find({name : 'rrr'}).count((error, user) => {
-        if(error){
-            return console.log("error")
-        }
-        console.log(user);
-    })
+      db.collection('users').updateMany({name: 'rrr'},{$inc :{age: -10}} ).then((result) =>{
+        console.log(result);
+    }).catch((error) => {
+        console.log(error);
+    });
+  
 
 });
 
-
+  // db.collection('users').updateOne({name: 'rrr'},{$inc :{age: -1}} ).then((result) =>{
+    //     console.log(result);
+    // }).catch((error) => {
+    //     console.log(error);
+    // });
 
     // db.collection('users').insertOne({
     //     _id:id,
@@ -63,4 +55,24 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true } , (error, client) =
     //     if(!error){
     //         console.log(result);
     //     }
+    // })
+
+     // // db.collection('users').findOne({name : 'rrr'} , (error, user) => {
+    // //     if(error){
+    // //         return console.log("error")
+    // //     }
+    // //     console.log(user);
+    // // })
+    // db.collection('users').find({name : 'rrr'}).toArray((error, user) => {
+    //     if(error){
+    //         return console.log("error")
+    //     }
+    //     console.log(user);
+    // })
+
+    // db.collection('users').find({name : 'rrr'}).count((error, user) => {
+    //     if(error){
+    //         return console.log("error")
+    //     }
+    //     console.log(user);
     // })
