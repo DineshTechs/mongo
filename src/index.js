@@ -17,11 +17,6 @@ app.post('/users', async (req, res) => {
         res.status(400).send(e)
     }
 
-    // user.save().then(() => {
-    //     res.status(201).send(user)
-    // }).catch((e) => {
-    //     res.status(400).send(e)
-    // })
 })
 
 app.get('/users', async (req, res) => {
@@ -32,11 +27,7 @@ app.get('/users', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-    // User.find({}).then((users) => {
-    //     res.send(users)
-    // }).catch((e) => {
-    //     res.status(500).send()
-    // })
+
 })
 
 app.get('/users/:id', async (req, res) => {
@@ -52,15 +43,27 @@ app.get('/users/:id', async (req, res) => {
     }
 
 
-    // User.findById(_id).then((user) => {
-    //     if (!user) {
-    //         return res.status(404).send()
-    //     }
+})
 
-    //     res.send(user)
-    // }).catch((e) => {
-    //     res.status(500).send()
-    // })
+app.patch('/users/:id', async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdate = ['name', 'email', 'password', 'age']
+    const isValidOperation = updates.every((update) => allowedUpdate.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(404).send({ error: 'invalid operation' })
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        if (!user) {
+            return res.status(404).send();
+        }
+        res.status(200).send(user)
+    } catch (e) {
+        res.send(400).send();
+    }
+
 })
 
 app.post('/tasks', async (req, res) => {
@@ -71,11 +74,7 @@ app.post('/tasks', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-    // task.save().then(() => {
-    //     res.status(201).send(task)
-    // }).catch((e) => {
-    //     res.status(400).send(e)
-    // })
+
 })
 
 app.get('/tasks', async (req, res) => {
@@ -86,11 +85,7 @@ app.get('/tasks', async (req, res) => {
     } catch (e) {
         res.status(500).send()
     }
-    // Task.find({}).then((tasks) => {
-    //     res.send(tasks)
-    // }).catch((e) => {
-    //     res.status(500).send()
-    // })
+
 })
 
 app.get('/tasks/:id', async (req, res) => {
@@ -105,15 +100,28 @@ app.get('/tasks/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send()
     }
-    // Task.findById(_id).then((task) => {
-    //     if (!task) {
-    //         return res.status(404).send()
-    //     }
 
-    //     res.send(task)
-    // }).catch((e) => {
-    //     res.status(500).send()
-    // })
+})
+
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdate = ['description', 'completed']
+    const isValidOperation = updates.every((update) => allowedUpdate.includes(update))
+
+    if (!isValidOperation) {
+        return res.status(404).send({ error: 'invalid operation' })
+    }
+
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+        if (!task) {
+            return res.status(404).send();
+        }
+        res.status(200).send(task)
+    }
+    catch (e) {
+        res.status(404).send({ error: 'Failure' })
+    }
 })
 
 app.listen(port, () => {
